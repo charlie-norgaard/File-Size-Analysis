@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Author: Charlie Norgaard
+#
+# Takes a URL as an argument and counts the number of words in the file
+# located at the given web address.
+
+if [ "$#" -lt 1 ]; then
+	echo Error: no arguments provided. >&2
+	echo Usage: ./measurepage [URL]
+	exit 1
+fi
+
+# Writes the contents of the URL file into a temporary text file.
+touch temp
+wget -qO- "$1" > temp
+
+# Checks if the web file can be accessed/downloaded.
+if [ "$?" != 0 ]; then
+    	echo 0
+else
+	# Counts the number of words in the temp file.
+	wordcount -w temp
+fi
+rm temp
+exit 0

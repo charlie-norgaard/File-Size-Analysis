@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Author: Charlie Norgaard
+# UWNetID: norgc52
+# Homework 4: Part 3
+#
+# Takes a list of URLs and sequentially counts the number of words for each URL file.
+
+if [ "$#" -lt 2 ]; then
+        echo Usage: ./runanalysis [Output File] [Input File] >&2
+        exit 1
+elif [ ! -f "$2" ]; then
+	echo Error: "$2" does not exist. >&2
+	exit 1 
+elif [ -f "$1" ]; then
+	echo Warning: Output file already exists. Overwriting... >&2
+	> "$1"
+fi
+
+COUNTER=0
+
+# Reads each line in the given URL file.
+while IFS= read -r line; do
+	echo Performing word count measurement on "$line"...
+	measure=$(measurepage $line)
+	# Checks if a wordcount can be produced for a given URL. 
+	if [ "$measure" -eq 0 ]; then
+		echo Failure...
+	else
+		# if a wordcount can be produced, writes the URL index number
+		# and corresponding file wordcount on the same line to the output file.
+		echo Success...
+	        let COUNTER=COUNTER+1
+        	echo -n "$COUNTER " >> "$1"; measurepage $line >> "$1"
+	fi
+done < $2
+
+exit 0

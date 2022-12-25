@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Author: Charlie Norgaard
+#
+# Extracts C code file URLs from an HTML page and writes them into a text file.
+
+if [ "$#" -lt 2 ]; then
+	echo Usage: combine outputfilename [inputfilename …] >&2
+	exit 1
+elif [ ! -f "$2" ]; then
+	echo Error: "$2" does not exist. >&2
+	exit 1
+fi
+
+if [ -f "$1" ]; then
+	echo Warning: Output file already exists. Overwriting... >&2
+	> "$1"
+else
+	touch "$1"
+fi
+
+# Sequentially parses the the .html file for all .c file URls
+grep -Eoi '<a [^>]+>' "$2" | grep -Eo 'href="[^\"]+"' | grep '\.c"$' > "$1"
+# Modifies extracted URLs to include proper URL paths
+sed -i 's#href="..#https://courses.cs.washington.edu/courses/cse374/22au#g' "$1";  sed -i 's|[",]||g' "$1"
+
+
+exit 0
+
