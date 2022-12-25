@@ -1,8 +1,6 @@
 #!/bin/bash
 #
 # Author: Charlie Norgaard
-# UWNetID: norgc52
-# Homework 4: Part 3
 #
 # Takes a list of URLs and sequentially counts the number of words for each URL file.
 
